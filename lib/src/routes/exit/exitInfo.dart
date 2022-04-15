@@ -1,52 +1,24 @@
 import 'dart:typed_data';
-import 'package:al/src/mainMenu.dart';
+import 'package:ing/models/WareHouseProductModel.dart';
+import 'package:ing/models/WareInventoryModel.dart';
+import 'package:ing/src/mainMenu.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:al/services/warehouse.dart';
-import 'package:ots/ots.dart';
-import 'dart:developer' as developer;
-import '../../../models/ExitsDetails.dart';
-import '../../../models/ExitsInfo.dart';
-import 'package:signature/signature.dart';
-import 'dart:convert';
-import 'package:images_picker/images_picker.dart';
+import 'package:ing/services/warehouse.dart';
 
 
 
-class ExitInfo extends StatefulWidget {
-  final int exitId;
-  final ExistsInfo info;
-  const ExitInfo({Key? key, required this.exitId, required this.info}) : super(key: key);
+
+class ExitChoice extends StatefulWidget {
+  final int wareId;
+  final String wareShortName;
+  const ExitChoice({Key? key, required this.wareId, required this.wareShortName}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ExitInfo();
+  State<StatefulWidget> createState() => _ExitChoice();
 }
 
-class _ExitInfo extends State<ExitInfo> {
-  final SignatureController _controller = SignatureController(
-    penStrokeWidth: 1,
-    penColor: Colors.white,
-    exportBackgroundColor: Colors.black,
-  );
-
-
-  Color photoColor = Colors.red;
-  Color signatureColor = Colors.red;
-  Media? _image;
-
-  Future<void> _openImagePicker() async {
-    await ImagesPicker.openCamera(
-      pickType: PickType.image,
-      quality: 0.5,
-      maxSize: 500,
-    ).then((value) => {
-      _image = value![0]
-    });
-
-    setState(() {
-      photoColor = Colors.green;
-    });
-  }
+class _ExitChoice extends State<ExitChoice> {
+  List<WareHouseProductModel> product = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,75 +27,82 @@ class _ExitInfo extends State<ExitInfo> {
       appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.red,
-          title: Text('Exit ID: ' + widget.exitId.toString())
+          title: Text('AL: ' + widget.wareShortName),
+          actions: <Widget>[
+
+            Padding(padding: const EdgeInsets.all(10.0),
+
+              child:  Container(
+                  height: 150.0,
+                  width: 30.0,
+                  child:  GestureDetector(
+                    onTap: () {},
+                    child:  Stack(
+                      children: <Widget>[
+                         const IconButton(icon:  Icon(Icons.shopping_cart,
+                          color: Colors.white,),
+                          onPressed: null,
+                        ),
+                        product.isEmpty ?  Container() :
+                         Positioned(
+
+                            child:  Stack(
+                              children: <Widget>[
+                                 const Icon(
+                                    Icons.brightness_1,
+                                    size: 20.0, color: Colors.white54),
+                                 Positioned(
+                                    top: 3.0,
+                                    right: 4.0,
+                                    child:  Center(
+                                      child:  Text(
+                                        product.length.toString(),
+                                        style:  const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 11.0,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    )),
+
+
+                              ],
+                            )),
+
+                      ],
+                    ),
+                  )
+              )
+
+              ,)],
+
       ),
-      body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(color: Colors.white),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    IconButton(
-                        icon: const Icon(Icons.key),
-                        color: signatureColor,
-                        onPressed: _showSignature
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.camera),
-                      color: photoColor,
-                      onPressed: _openImagePicker,
-                    ),
-                    signatureColor == Colors.green && photoColor == Colors.green?
-                    IconButton(
-                      icon: const Icon(Icons.check),
-                      color: Colors.blue,
-                      onPressed: validateAndUpload,
-                    ) : const Text('Faltan Datos'),
-                  ],
-                ),
-              ),
+      body: SizedBox(
+        height: (MediaQuery.of(context).size.height),
+        child: FutureBuilder<WareInventory>(
+          future: WarehouseService().wareInventory(widget.wareId),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if(snapshot.data?.error == true){
+                return _buildAlertDialog(snapshot.data?.stack);
+              } else {
+                return _buildList(snapshot.data!);
+              }
+            }
+            else if (snapshot.hasError) {
+              return _buildAlertDialog(snapshot.error.toString());
+            }
 
-              ListTile(
-                leading: const Icon(Icons.verified_user, color: Colors.blue),
-                title: Text('Entregar a: ' + widget.info.data[0].receiverName),
-                subtitle: Text('Frente: ' + widget.info.data[0].frontName),
-              ),
+            // By default, show a loading spinner.
+            return Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:const <Widget>[ CircularProgressIndicator()]
+                )
+            );
+          },
+        ),
 
-              const Divider(
-                height: 10,
-                thickness: 10,
-              ),
-              FutureBuilder<ExistsDetails>(
-                future: WarehouseService().wareExistDetails(widget.exitId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if(snapshot.data?.error == true){
-                      return _buildAlertDialog(snapshot.data?.stack);
-                    } else {
-                      return _buildList(snapshot.data!);
-                    }
-                  }
-                  else if (snapshot.hasError) {
-                    return _buildAlertDialog(snapshot.error.toString());
-                  }
-
-                  // By default, show a loading spinner.
-                  return Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children:const <Widget>[ CircularProgressIndicator()]
-                      )
-                  );
-                },
-              ),
-
-
-
-            ],
-          )
       ),
     );
 
@@ -142,7 +121,7 @@ class _ExitInfo extends State<ExitInfo> {
       ],
     );
   }
-  Widget _buildList(ExistsDetails details) {
+  Widget _buildList(WareInventory details) {
     return SizedBox(
         height: (MediaQuery.of(context).size.height),
         child:
@@ -157,9 +136,18 @@ class _ExitInfo extends State<ExitInfo> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
+                      onTap: () {
+                        setState(() {
+                          product.add(WareHouseProductModel(
+                              waId: details.data[index].waId,
+                              invWareID: details.data[index].invWareID,
+                              invProductID: details.data[index].invProductID,
+                          ));
+                        });
+                      },
                       leading: const Icon(Icons.shopping_bag, color: Colors.teal),
                       title: Text(details.data[index].proDescription),
-                      subtitle: Text(details.data[index].quantity.toString() + ' ' + details.data[index].proUnit),
+                      subtitle: Text(details.data[index].invQuantity.toString() + ' ' + details.data[index].proUnit),
                     )
                   ],
                 ),
@@ -168,104 +156,5 @@ class _ExitInfo extends State<ExitInfo> {
         )
     );
   }
-
-
-  Future _showSignature()  {
-    return showDialog(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Firma de receptor'),
-          content: SingleChildScrollView(
-            child: Signature(
-              controller: _controller,
-              height: 300,
-              backgroundColor: Colors.black,
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.check),
-              color: Colors.green,
-              onPressed: () async {
-                if (_controller.isNotEmpty) {
-                  final Uint8List? data = await _controller.toPngBytes();
-                  if (data != null) {
-                    setState(() {
-                      signatureColor = Colors.green;
-                    });
-                    Navigator.pop(context);
-                  }
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.undo),
-              color: Colors.blue,
-              onPressed: () {
-                setState(() => _controller.undo());
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.redo),
-              color: Colors.blue,
-              onPressed: () {
-                setState(() => _controller.redo());
-              },
-            ),
-            //CLEAR CANVAS
-            IconButton(
-              icon: const Icon(Icons.clear),
-              color: Colors.red,
-              onPressed: () {
-                setState(() {
-                  _controller.clear();
-                  signatureColor = Colors.red;
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void validateAndUpload() async{
-    showLoader();
-    if(_image != null) {
-      if (_controller.isNotEmpty) {
-        final Uint8List? data = await _controller.toPngBytes();
-        if (data != null) {
-          _controller.toPngBytes().then((value) => {
-            //developer.log(base64.encode(value!))
-            WarehouseService().releaseExit(widget.exitId, base64.encode(File(_image!.path).readAsBytesSync()), base64.encode(value!)).then((value) =>
-            {
-              if(value.error) {
-                bakeToast('Error:' + value.stack!, type: ToastType.error),
-                hideLoader()
-              } else {
-                bakeToast('Se agrego sin problemas', type: ToastType.success),
-                hideLoader(),
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const MainMenu())),
-              }
-            })
-            //developer.log(base64.encode(File(_image!.path).readAsBytesSync()))
-          });
-        } else {
-          bakeToast('Falta firma', type: ToastType.error);
-          hideLoader();
-        }
-      } else {
-        bakeToast('Faltan los datos para cargar', type: ToastType.error);
-        hideLoader();
-      }
-    } else {
-      bakeToast('Favor de volver a tomar la foto', type: ToastType.info);
-      hideLoader();
-    }
-
-  }
-
 
 }

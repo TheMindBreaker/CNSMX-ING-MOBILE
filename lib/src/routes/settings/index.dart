@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:al/models/WareHousesModel.dart';
-import 'package:al/services/warehouse.dart';
+import 'package:ing/models/WareHousesModel.dart';
+import 'package:ing/services/warehouse.dart';
 import 'package:flutter/material.dart';
 import 'package:ots/ots.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -18,7 +18,6 @@ class SettIndex extends StatefulWidget {
 }
 
 class _SettIndex extends State<SettIndex> {
-  int? WareId;
   String? jwt;
 
   PackageInfo? appInfo;
@@ -26,7 +25,6 @@ class _SettIndex extends State<SettIndex> {
 
   @override
   Widget build(BuildContext context) {
-    AuthService().getWareId().then((value) => WareId = value);
     AuthService().getJwt().then((value) => jwt = value);
     PackageInfo.fromPlatform().then((value) => appInfo = value);
     return Scaffold(
@@ -53,19 +51,6 @@ class _SettIndex extends State<SettIndex> {
 
     return Column(
       children: [
-        Card(
-          child: ListTile(
-            title: Text('Almacen Actual: ' + WareId.toString()),
-            trailing: const Icon(Icons.refresh, color: Colors.blue),
-            subtitle: const Text('Puede consultar la lista de almacenes con el encargado de almacen'),
-            onTap: () {
-              showLoader();
-              AuthService().setWarehouse(jwt!).then((value) => {
-                hideLoader(),
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const MainMenu())),
-            });},
-          ),
-        ),
         const Divider(thickness: 20, color: Colors.white54),
         Card(
           child: ListTile(

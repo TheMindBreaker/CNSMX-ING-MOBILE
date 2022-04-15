@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
-import 'package:al/src/welcome.dart';
+import 'package:ing/src/welcome.dart';
 import 'package:ots/ots.dart';
 
 void main() {

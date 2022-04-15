@@ -1,7 +1,7 @@
-import 'package:al/src/mainMenu.dart';
+import 'package:ing/src/mainMenu.dart';
 import 'package:flutter/material.dart';
-import 'package:al/services/auth.dart';
-import 'package:al/src/Widgets/bezierContainer.dart';
+import 'package:ing/services/auth.dart';
+import 'package:ing/src/Widgets/bezierContainer.dart';
 import 'dart:developer' as developer;
 import 'package:ots/ots.dart';
 class LoginPage extends StatefulWidget {
@@ -144,7 +144,6 @@ class _LoginPageState extends State<LoginPage> {
       else {
         hideLoader();
         AuthService().setUserIdent(_apiResponse.apiToken);
-        AuthService().setWarehouse(_apiResponse.apiToken);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const MainMenu()),

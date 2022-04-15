@@ -1,6 +1,6 @@
-import 'package:al/services/auth.dart';
+import 'package:ing/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:al/src/login.dart';
+import 'package:ing/src/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 

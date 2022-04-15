@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
-import 'package:al/models/UserWarehouseModel.dart';
-import 'package:al/src/login.dart';
-import 'package:al/src/welcome.dart';
+import 'package:ing/models/UserWarehouseModel.dart';
+import 'package:ing/src/login.dart';
+import 'package:ing/src/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:al/src/mainMenu.dart';
+import 'package:ing/src/mainMenu.dart';
 class AuthService {
 
   Future<ApiResponse> authenticateUser(String userEmail, String mobileACCO) async {
@@ -58,27 +58,23 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final parts = jwt.split('.');
     var decodedToken = decodeBase64(parts[1]);
-    prefs.setString('cnsmxJwt', jwt);
-    prefs.setString('cnsmxUser', json.decode(decodedToken).toString());
+    prefs.setString('cnsmxJwtIng', jwt);
+    prefs.setString('cnsmxUserIng', json.decode(decodedToken).toString());
   }
   Future<String> getJwt() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('cnsmxJwt')!;
+    return prefs.getString('cnsmxJwtIng')!;
   }
 
-  Future<int> getWareId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('cnsmxWarehouse')!;
-  }
   Future<void> isLogged(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if(prefs.getString('cnsmxJwt') == null && prefs.getString('cnsmxJwt') == null) {
+    if(prefs.getString('cnsmxJwtIng') == null && prefs.getString('cnsmxJwtIng') == null) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const LoginPage()));
     }
     else {
-      final parts = prefs.getString('cnsmxJwt')!.split('.');
+      final parts = prefs.getString('cnsmxJwtIng')!.split('.');
       var decodedToken = decodeBase64(parts[1]);
       var expDate = DateTime.fromMillisecondsSinceEpoch(json.decode(decodedToken)['exp'] * 1000);
       if(expDate.compareTo(DateTime.now())>0) {
@@ -93,9 +89,8 @@ class AuthService {
   }
   logout(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('cnsmxUser');
-    prefs.remove('cnsmxJwt');
-    prefs.remove('cnsmxWarehouse');
+    prefs.remove('cnsmxUserIng');
+    prefs.remove('cnsmxJwtIng');
     Navigator.pushReplacement(context,
       MaterialPageRoute(builder: (BuildContext ctx) => WelcomePage()));
 
@@ -117,28 +112,6 @@ class AuthService {
     }
 
     return utf8.decode(base64Url.decode(output));
-  }
-  Future<UserWarehouseModel> getUserWarehouse() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var jwt = prefs.getString('cnsmxJwt')!;
-
-    var headers = {
-      'Authorization': 'Bearer ' + jwt
-    };
-
-
-    var response = await http.post(Uri.https('connect.construtec.mx', 'mobile/Account/getWarehouse'), headers: headers);
-    developer.log(response.body.toString());
-    return UserWarehouseModel.fromJson(json.decode(response.body));
-  }
-  Future<int> setWarehouse(String jwt) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserWarehouseModel warehouse = await getUserWarehouse();
-    prefs.setInt('cnsmxWarehouse', warehouse.data.wareId);
-    return warehouse.data.wareId;
-  }
-  void viewWarehouse() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
   }
 }
 class ApiResponse {

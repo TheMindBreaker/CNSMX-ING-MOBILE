@@ -1,8 +1,8 @@
-import 'package:al/services/auth.dart';
-import 'package:al/src/routes/enter/index.dart';
-import 'package:al/src/routes/exit/index.dart';
-import 'package:al/src/routes/home/index.dart';
-import 'package:al/src/routes/settings/index.dart';
+import 'package:ing/services/auth.dart';
+import 'package:ing/src/routes/enter/index.dart';
+import 'package:ing/src/routes/exit/index.dart';
+import 'package:ing/src/routes/home/index.dart';
+import 'package:ing/src/routes/settings/index.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -59,13 +59,13 @@ class _MainMenu extends State<MainMenu>
             inactiveColor: Colors.black,
           ),
           BottomNavyBarItem(
-            icon: const Icon(Icons.plus_one),
-            title: const Text('Entradas'),
+            icon: const Icon(Icons.shopping_bag),
+            title: const Text('Requisiciones'),
             activeColor: Colors.redAccent,
             inactiveColor: Colors.black,
           ),
           BottomNavyBarItem(
-            icon: const Icon(Icons.exposure_minus_1),
+            icon: const Icon(Icons.warehouse),
             title: const Text('Salidas'),
             activeColor: Colors.redAccent,
             inactiveColor: Colors.black,
