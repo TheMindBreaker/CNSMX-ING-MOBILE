@@ -68,7 +68,7 @@ class WarehouseService {
     var headers = {
       'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
     };
-    final response = await http.post(Uri.http('192.168.8.52:4000', 'Purchases/WareHouse/createExit', ),
+    final response = await http.post(Uri.https('connect.construtec.mx', 'Purchases/WareHouse/createExit', ),
         headers: headers,
         body: {'wareId':wareId.toString(),
           'frontId':frontId.toString(),

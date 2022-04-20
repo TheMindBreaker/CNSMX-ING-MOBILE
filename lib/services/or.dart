@@ -27,7 +27,7 @@ class OrderService {
       'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
     };
 
-    final response = await http.get(Uri.http('192.168.8.52:4000', 'Purchases/Requisitions/getByCreatorMobile'), headers: headers);
+    final response = await http.get(Uri.https('connect.construtec.mx:4000', 'Purchases/Requisitions/getByCreatorMobile'), headers: headers);
     return RequisitionsInfoModel.fromJson(json.decode(response.body));
   }
 
@@ -37,7 +37,7 @@ class OrderService {
       'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
     };
 
-    final response = await http.get(Uri.http('192.168.8.52:4000', 'Purchases/Requisitions/getProducts/' + reqId.toString()), headers: headers);
+    final response = await http.get(Uri.https('connect.construtec.mx:4000', 'Purchases/Requisitions/getProducts/' + reqId.toString()), headers: headers);
     return RequisitionsProductModel.fromJson(json.decode(response.body));
   }
 
