@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:ing/models/FrontModel.dart';
 import 'package:ing/models/RequisitionsInfoModel.dart';
 import 'package:ing/models/RequisitionsProductModel.dart';
 import 'dart:convert';
@@ -26,8 +27,8 @@ class OrderService {
       'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
     };
 
-    final response = await http.get(Uri.http('192.168.8.91:4000', 'Purchases/Requisitions/getByCreatorMobile'), headers: headers);
-    return RequisitionsInfoModel.fromJson(json.decode(response.body));;
+    final response = await http.get(Uri.http('192.168.8.52:4000', 'Purchases/Requisitions/getByCreatorMobile'), headers: headers);
+    return RequisitionsInfoModel.fromJson(json.decode(response.body));
   }
 
   Future<RequisitionsProductModel> getRequisitionProducts(int reqId) async {
@@ -36,7 +37,17 @@ class OrderService {
       'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
     };
 
-    final response = await http.get(Uri.http('192.168.8.91:4000', 'Purchases/Requisitions/getProducts/' + reqId.toString()), headers: headers);
-    return RequisitionsProductModel.fromJson(json.decode(response.body));;
+    final response = await http.get(Uri.http('192.168.8.52:4000', 'Purchases/Requisitions/getProducts/' + reqId.toString()), headers: headers);
+    return RequisitionsProductModel.fromJson(json.decode(response.body));
+  }
+
+  Future<FrontModel> getFront(int frontNo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var headers = {
+      'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
+    };
+
+    final response = await http.get(Uri.https('connect.construtec.mx', 'Purchases/General/fronts/' + frontNo.toString()), headers: headers);
+    return FrontModel.fromJson(json.decode(response.body));
   }
 }

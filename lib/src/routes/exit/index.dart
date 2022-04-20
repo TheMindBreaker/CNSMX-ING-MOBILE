@@ -2,7 +2,8 @@ import 'package:ing/models/ExitsInfo.dart';
 import 'package:ing/models/WareHousesModel.dart';
 import 'package:ing/services/warehouse.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
+import 'package:ots/ots.dart';
+import 'dart:developer' as dev;
 
 import 'exitInfo.dart';
 
@@ -52,23 +53,33 @@ class _ExitIndex extends State<ExitIndex> {
     return SizedBox(
       height: (MediaQuery.of(context).size.height),
       child:
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: info.data!.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child:ListTile(
+      ListView.builder(
+        shrinkWrap: true,
+        itemCount: info.data!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            child:ListTile(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ExitChoice(wareId: info.data![index].id!, wareShortName: info.data![index].wareShorName!,)));
+                  showLoader();
+                  WarehouseService().wareInventory(info.data![index].id!).then((value) => {
+                    if(value.error) {
+                      hideLoader(),
+                      _buildAlertDialog(value.stack)
+                    } else {
+                      hideLoader(),
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                          ExitChoice(wareId: info.data![index].id!, wareShortName: info.data![index].wareShorName!, productsInventory: value.data,)))
+                    }
+                  });
 
                 },
-                  leading: const Icon(Icons.warehouse, color: Colors.greenAccent),
-                  title: Text(info.data![index].wareName!),
-                  subtitle: Text(info.data![index].wareShorName!,)
-              ),
-            );
-          },
-        ),
+                leading: const Icon(Icons.warehouse, color: Colors.greenAccent),
+                title: Text(info.data![index].wareName!),
+                subtitle: Text(info.data![index].wareShorName!,)
+            ),
+          );
+        },
+      ),
     );
 
   }

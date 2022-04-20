@@ -7,7 +7,7 @@ class WareEnterProduct {
 
   WareEnterProduct.fromJson(Map<String, dynamic> json) {
     error = json['error'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = Data.fromJson(json['data']);
     stack = json['stack'];
   }
 

@@ -1,6 +1,5 @@
 import 'package:ing/models/orderInfoModel.dart';
 import 'package:ing/src/mainMenu.dart';
-import 'package:ing/src/routes/enter/enterMaterial.dart';
 import 'package:flutter/material.dart';
 import 'package:ing/services/or.dart';
 
@@ -108,10 +107,6 @@ class _LoadOr extends State<LoadOr> {
             Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate() == true) {
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => EnterMaterial(info: info!)));
-                    }
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.green,

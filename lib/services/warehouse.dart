@@ -10,6 +10,8 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/WareHouseProductModel.dart';
+
 class WarehouseService {
   Future<WareHousesModel> getWarehouse() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -18,24 +20,6 @@ class WarehouseService {
     };
     final response = await http.get(Uri.https('connect.construtec.mx', 'Purchases/WareHouse/getWarehouse'), headers: headers);
     return WareHousesModel.fromJson(json.decode(response.body));
-  }
-  Future<WareEnterProduct> wareEnterProduct(int productId,int orderId,int reqId,String orderCode,String requisitionCode,int wareId,double enter, int purProductId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var headers = {
-      'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
-    };
-    final response = await http.post(Uri.https('connect.construtec.mx', 'Purchases/WareHouse/enterOrderProduct'),
-        body: {'productId':productId.toString(),
-          'orderId':orderId.toString(),
-          'reqId':reqId.toString(),
-          'orderCode':orderCode,
-          'requisitionCode':requisitionCode,
-          'wareId':wareId.toString(),
-          'enter':enter.toString(),
-          'purProductId': purProductId.toString(),
-        },
-        headers: headers);
-    return WareEnterProduct.fromJson(json.decode(response.body));
   }
   Future<ExistsInfo> wareExistInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,7 +49,6 @@ class WarehouseService {
         headers: headers);
     return ExistsDetails.fromJson(json.decode(response.body));
   }
-
   Future<WareEnterProduct> releaseExit(int exitId, String photo, String signature) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {
@@ -76,6 +59,22 @@ class WarehouseService {
         body: {'exitId':exitId.toString(),
           'photoBlob':photo.toString(),
           'signBlob':signature.toString(),
+        });
+    return WareEnterProduct.fromJson(json.decode(response.body));
+  }
+
+  Future<WareEnterProduct> createExit(int wareId, int frontId, int placeId, List<WareHouseProductModel> cart, String receptorName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var headers = {
+      'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!
+    };
+    final response = await http.post(Uri.http('192.168.8.52:4000', 'Purchases/WareHouse/createExit', ),
+        headers: headers,
+        body: {'wareId':wareId.toString(),
+          'frontId':frontId.toString(),
+          'placeId':placeId.toString(),
+          'receptorName':receptorName,
+          'cart': jsonEncode(cart),
         });
     return WareEnterProduct.fromJson(json.decode(response.body));
   }
