@@ -1,5 +1,4 @@
 import 'package:ing/services/auth.dart';
-import 'package:ing/src/routes/enter/index.dart';
 import 'package:ing/src/routes/exit/index.dart';
 import 'package:ing/src/routes/home/index.dart';
 import 'package:ing/src/routes/settings/index.dart';
@@ -19,7 +18,6 @@ class _MainMenu extends State<MainMenu>
 
   List listOfColors = [
     const HomeIndex(),
-    const EnterIndex(),
     const ExitIndex(),
     const SettIndex(),
   ];
@@ -55,12 +53,6 @@ class _MainMenu extends State<MainMenu>
           BottomNavyBarItem(
             icon: const Icon(Icons.home),
             title: const Text('Inicio'),
-            activeColor: Colors.redAccent,
-            inactiveColor: Colors.black,
-          ),
-          BottomNavyBarItem(
-            icon: const Icon(Icons.shopping_bag),
-            title: const Text('Requisiciones'),
             activeColor: Colors.redAccent,
             inactiveColor: Colors.black,
           ),
