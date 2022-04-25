@@ -104,7 +104,7 @@ class _SettIndex extends State<SettIndex> {
   void upgrade() async {
     showLoader();
     RUpgrade.upgrade(
-        'https://github.com/TheMindBreaker/CNSMX-AL-MOBILE/raw/main/CurrentAPK/app-release.apk',
+        'https://github.com/TheMindBreaker/CNSMX-ING-MOBILE/raw/main/CurrentAPK/app-release.apk',
         fileName: 'app-release.apk',isAutoRequestInstall: true, notificationVisibility: NotificationVisibility.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
     ).then((value) => {
       dev.log(value.toString()),
