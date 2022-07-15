@@ -26,7 +26,7 @@ class _Cart extends State<Cart> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black,
           title: const Text('Carrito'),
           actions: [
             widget.products.isNotEmpty?
@@ -45,7 +45,7 @@ class _Cart extends State<Cart> {
         ),
         body: SizedBox(
             height: (MediaQuery.of(context).size.height),
-            child: Column(children: [
+            child:
               widget.products.isEmpty?
               const Center( child:Text('No Hay nada en el carrito')):
               ListView.builder(
@@ -84,7 +84,6 @@ class _Cart extends State<Cart> {
                     );
                 },
               )
-            ],)
 
         )
     );

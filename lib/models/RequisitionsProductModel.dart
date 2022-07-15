@@ -59,7 +59,7 @@ class Data {
   late final String proDescription;
   late final String proUnit;
   late final int proActualPrice;
-  late final double proAveragePrice;
+  late final int proAveragePrice;
   late final int invQuantity;
   late final int reqRealMissing;
   late final String reqIDString;

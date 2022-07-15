@@ -38,7 +38,7 @@ class _MainMenu extends State<MainMenu>
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black,
       ),
       body: listOfColors[currentIndex],
 
@@ -53,19 +53,19 @@ class _MainMenu extends State<MainMenu>
           BottomNavyBarItem(
             icon: const Icon(Icons.home),
             title: const Text('Inicio'),
-            activeColor: Colors.redAccent,
+            activeColor: Colors.black12,
             inactiveColor: Colors.black,
           ),
           BottomNavyBarItem(
             icon: const Icon(Icons.warehouse),
             title: const Text('Salidas'),
-            activeColor: Colors.redAccent,
+            activeColor: Colors.black12,
             inactiveColor: Colors.black,
           ),
           BottomNavyBarItem(
             icon: const Icon(Icons.settings),
             title: const Text('Conf'),
-            activeColor: Colors.redAccent,
+            activeColor: Colors.black12,
             inactiveColor: Colors.black,
           ),
         ],

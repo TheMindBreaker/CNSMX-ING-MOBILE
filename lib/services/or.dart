@@ -32,6 +32,7 @@ class OrderService {
   }
 
   Future<RequisitionsProductModel> getRequisitionProducts(int reqId) async {
+    print(reqId);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {
       'Authorization': 'Bearer ' + prefs.getString('cnsmxJwtIng')!

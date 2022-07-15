@@ -27,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
             borderRadius: BorderRadius.all(Radius.circular(5)),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: Color(0xffdf8e33).withAlpha(100),
+                  color: Color(0xfff).withAlpha(100),
                   offset: Offset(2, 4),
                   blurRadius: 8,
                   spreadRadius: 2)
@@ -35,7 +35,7 @@ class _WelcomePageState extends State<WelcomePage> {
             color: Colors.white),
         child: const Text(
           'Iniciar',
-          style: TextStyle(fontSize: 20, color: Colors.red),
+          style: TextStyle(fontSize: 20, color: Colors.black),
         ),
       ),
     );
@@ -82,7 +82,7 @@ class _WelcomePageState extends State<WelcomePage> {
               gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color.fromRGBO(215,35,35,1), Color.fromRGBO(250,36,36,1)])),
+                  colors: [Color.fromRGBO(0,0,0,1), Color.fromRGBO(0,0,0,1)])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

@@ -36,7 +36,7 @@ class _ReqDetails extends State<ReqDetails> {
     return Scaffold(
       appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black,
           title: Text('ReqID: ' + widget.reqId.toString()),
           actions: [
             IconButton(onPressed: () {
@@ -84,7 +84,8 @@ class _ReqDetails extends State<ReqDetails> {
                     }
                   }
                   else if (snapshot.hasError) {
-                    return _buildAlertDialog(snapshot.error.toString());
+                    print(snapshot.error);
+                    return _buildAlertDialog(snapshot.error.toString()+widget.reqId.toString());
                   }
 
                   // By default, show a loading spinner.
@@ -116,7 +117,7 @@ class _ReqDetails extends State<ReqDetails> {
   }
   Widget _buildList(RequisitionsProductModel details) {
     return SizedBox(
-        height: (MediaQuery.of(context).size.height),
+        height: (530),
         child:
         ListView.builder(
           scrollDirection: Axis.vertical,
@@ -130,8 +131,8 @@ class _ReqDetails extends State<ReqDetails> {
                   children: <Widget>[
                     ListTile(
                       leading: const Icon(Icons.shopping_bag, color: Colors.teal),
-                      title: Text(details.data[index].proDescription),
-                      subtitle: Text(details.data[index].reqQuantity.toString() + ' ' + details.data[index].proUnit),
+                      title: Text(details.data[index].proDescription.toString()),
+                      subtitle: Text(details.data[index].reqQuantity.toDouble().toString() + ' ' + details.data[index].proUnit),
                     )
                   ],
                 ),

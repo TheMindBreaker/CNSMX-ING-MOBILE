@@ -35,7 +35,7 @@ class _ExitChoice extends State<ExitChoice> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black,
         title: Text('AL: ' + widget.wareShortName),
         actions: <Widget>[
           Padding(padding: const EdgeInsets.all(10.0),
