@@ -58,8 +58,8 @@ class Data {
   late final int proCategory;
   late final String proDescription;
   late final String proUnit;
-  late final int proActualPrice;
-  late final int proAveragePrice;
+  late final double proActualPrice;
+  late final double proAveragePrice;
   late final int invQuantity;
   late final int reqRealMissing;
   late final String reqIDString;
@@ -77,8 +77,8 @@ class Data {
     proCategory = json['proCategory'];
     proDescription = json['proDescription'];
     proUnit = json['proUnit'];
-    proActualPrice = json['proActualPrice'];
-    proAveragePrice = json['proAveragePrice'];
+    proActualPrice = json['proActualPrice'].toDouble();
+    proAveragePrice = json['proAveragePrice'].toDouble();
     invQuantity = 0;
     reqRealMissing = json['reqRealMissing'];
     reqIDString = json['reqIDString'];
