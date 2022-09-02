@@ -47,7 +47,7 @@ class Data {
     required this.reqIDString,
     required this.reqCreatedBy,
   });
-  late final int id2;
+  late final int  id2;
   late final int reqID;
   late final int reqProductID;
   late final int reqQuantity;

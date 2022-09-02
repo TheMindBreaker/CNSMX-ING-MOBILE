@@ -47,7 +47,7 @@ class _Cart extends State<Cart> {
             height: (MediaQuery.of(context).size.height),
             child:
               widget.products.isEmpty?
-              const Center( child:Text('No Hay nada en el carrito')):
+              const Center( child:Text('No hay nada en el carrito')):
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -74,8 +74,8 @@ class _Cart extends State<Cart> {
                             subtitle:  Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text('PED: ' + widget.products[index].quantity.toString() + ' ' + widget.products[index].proUnit),
-                                Text('DIS: ' + widget.products[index].actualInventory.toString() + ' ' + widget.products[index].proUnit),
+                                Text('PEDIDO: ' + widget.products[index].quantity.toString() + ' ' + widget.products[index].proUnit),
+                                Text('DISPONIBLE: ' + widget.products[index].actualInventory.toString() + ' ' + widget.products[index].proUnit),
                               ],
                             ),
                           )
