@@ -51,7 +51,7 @@ class Data {
   late final int reqID;
   late final int reqProductID;
   late final int reqQuantity;
-  late final String reqProductNote;
+  late final String? reqProductNote;
   late final int reqMissing;
   late final int reqStatus;
   late final String proID;
